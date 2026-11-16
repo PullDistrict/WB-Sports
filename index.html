@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WB-Sports | Personal training in Tilburg</title>
+<meta name="description" content="Personal training, voedingsbegeleiding en groepstraining in een eigen studio in De Blaak, Tilburg. De intake is gratis, prijzen op aanvraag.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://www.wb-sports.nl/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:title" content="WB-Sports | Personal training in Tilburg">
+<meta property="og:description" content="Personal training, voeding en groepstraining in een eigen studio in De Blaak. De intake is gratis.">
+<meta property="og:url" content="https://www.wb-sports.nl/">
+<meta property="og:image" content="https://www.wb-sports.nl/img/og.jpg">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+/* ---------- Lettertype (lokaal, geen Google Fonts nodig) ---------- */
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+
+/* ---------- Kleuren en maten ---------- */
+:root {
+  --zwart: #000;
+  --hout: #151515;
+  --wit: #fff;
+  --staal: #a3a3a3;
+  --lijn: rgba(255, 255, 255, .18);
+  --gras: #1d3a2a;
+  --gras-tekst: #cfe0d4;
+
+  --rand: clamp(20px, 5vw, 48px);
+  --sectie: clamp(72px, 10vw, 136px);
+  --breed: 1200px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--zwart);
+  color: var(--wit);
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+p { margin: 0; text-wrap: pretty; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 2px; }
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 800;
+  font-stretch: 125%;
+  line-height: 1.04;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); }
+h2 { font-size: clamp(1.9rem, 4.4vw, 3.4rem); }
+h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
+
+.wrap { width: 100%; max-width: var(--breed); margin-inline: auto; padding-inline: var(--rand); }
+.sectie { padding-block: var(--sectie); }
+.zacht { color: var(--staal); }
+.lees { max-width: 34em; }
+
+/* ---------- Knoppen ---------- */
+.knop {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0 28px;
+  border: 1.5px solid var(--wit); border-radius: 999px;
+  background: var(--wit); color: var(--zwart);
+  font-weight: 700; font-stretch: 112%; font-size: 1rem;
+  text-decoration: none; white-space: nowrap;
+  transition: background-color .15s, color .15s;
+}
+.knop:hover { background: transparent; color: var(--wit); }
+.knop--open { background: transparent; color: var(--wit); border-color: rgba(255, 255, 255, .55); }
+.knop--open:hover { background: var(--wit); color: var(--zwart); border-color: var(--wit); }
+.knop--klein { min-height: 42px; padding: 0 20px; font-size: .9375rem; }
+
+/* ---------- Kop ---------- */
+.kop {
+  position: fixed; inset: 0 0 auto 0; z-index: 10;
+  transition: background-color .2s;
+}
+.kop.is-dicht { background: rgba(0, 0, 0, .92); backdrop-filter: blur(8px); }
+.kop__in { display: flex; align-items: center; gap: 32px; height: 72px; }
+.kop__logo { display: flex; align-items: center; margin-right: auto; }
+.kop__logo img { height: 42px; width: auto; }
+.kop__nav { display: flex; gap: 28px; }
+.kop__nav a { font-size: .9375rem; font-weight: 500; text-decoration: none; padding-block: 8px; }
+.kop__nav a:hover { text-decoration: underline; text-underline-offset: 6px; }
+@media (max-width: 760px) { .kop__nav { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; isolation: isolate;
+  min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-top: 120px;
+}
+.hero__beeld {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover; object-position: 62% 100%;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(to top, #000 0%, rgba(0, 0, 0, .72) 38%, rgba(0, 0, 0, .28) 72%, rgba(0, 0, 0, .55) 100%);
+}
+.hero__tekst { padding-bottom: clamp(36px, 6vw, 72px); }
+.hero__tekst p { margin-top: 24px; max-width: 32em; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: #e4e4e4; }
+.hero__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+.feiten {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  margin: 0; border-top: 1px solid var(--lijn);
+}
+.feiten div { padding: 22px 20px 26px 0; }
+.feiten div + div { padding-left: 20px; border-left: 1px solid var(--lijn); }
+.feiten dt { font-size: .875rem; color: var(--staal); }
+.feiten dd { margin: 2px 0 0; font-weight: 700; font-stretch: 112%; font-size: clamp(1rem, 1.6vw, 1.25rem); }
+@media (max-width: 760px) {
+  .feiten { grid-template-columns: 1fr 1fr; }
+  .feiten div { padding: 16px 12px 18px 0; }
+  .feiten div + div { padding-left: 0; border-left: 0; }
+  .feiten div:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--lijn); }
+  .feiten div:nth-child(n+3) { border-top: 1px solid var(--lijn); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__tekst > * { animation: op .7s cubic-bezier(.2, .7, .2, 1) both; }
+  .hero__tekst > *:nth-child(2) { animation-delay: .08s; }
+  .hero__tekst > *:nth-child(3) { animation-delay: .16s; }
+  @keyframes op { from { opacity: 0; transform: translateY(18px); } }
+}
+
+/* ---------- Aanbod ---------- */
+.aanbod__in { display: grid; grid-template-columns: 1fr 1.7fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+.aanbod__intro p { margin-top: 20px; }
+@media (min-width: 901px) { .aanbod__intro { position: sticky; top: 112px; } }
+.aanbod__lijst { list-style: none; margin: 0; padding: 0; }
+.aanbod__lijst > li {
+  display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px 32px;
+  padding-block: 30px; border-top: 1px solid var(--lijn);
+}
+.aanbod__lijst > li:last-child { border-bottom: 1px solid var(--lijn); }
+.aanbod__lijst p { color: #d6d6d6; }
+.aanbod__lijst p + p { margin-top: 14px; }
+.aanbod__lijst .tussenkop { margin-top: 24px; color: var(--wit); font-weight: 700; }
+.punten { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; color: #d6d6d6; }
+.punten li { position: relative; padding-left: 22px; }
+.punten li::before { content: ""; position: absolute; left: 0; top: .72em; width: 10px; height: 2px; background: var(--wit); }
+.rooster { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; margin: 12px 0 0; color: #d6d6d6; }
+.rooster dt { color: var(--wit); font-weight: 600; }
+.rooster dd { margin: 0; }
+@media (max-width: 900px) { .aanbod__in { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .aanbod__lijst > li { grid-template-columns: 1fr; padding-block: 24px; } }
+
+/* ---------- Intake ---------- */
+.intake { background: var(--gras); padding-block: clamp(56px, 8vw, 104px); }
+.intake__in { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(28px, 6vw, 96px); align-items: end; }
+.intake p { color: var(--gras-tekst); }
+.intake .knop { margin-top: 28px; }
+@media (max-width: 900px) { .intake__in { grid-template-columns: 1fr; align-items: start; } }
+
+/* ---------- Studio ---------- */
+.studio__kop { display: grid; grid-template-columns: 1fr 1fr; gap: 20px clamp(32px, 6vw, 96px); align-items: end; margin-bottom: clamp(32px, 5vw, 56px); }
+.galerij {
+  display: grid; gap: 12px;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+.galerij img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; background: var(--hout); }
+.galerij__a { grid-row: 1 / 3; aspect-ratio: 3 / 4; }
+.galerij__b { grid-column: 2 / 4; }
+@media (max-width: 760px) {
+  .studio__kop { grid-template-columns: 1fr; }
+  .galerij { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .galerij__a { grid-row: auto; grid-column: 1 / 3; aspect-ratio: 4 / 5; }
+  .galerij__b { grid-column: 1 / 3; aspect-ratio: 3 / 2; }
+  .galerij__c, .galerij__d { aspect-ratio: 3 / 4; }
+}
+
+/* ---------- Over ---------- */
+.over { background: var(--wit); color: var(--zwart); padding-top: var(--sectie); overflow: hidden; }
+.over__in { display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: clamp(32px, 7vw, 112px); align-items: end; }
+.over__foto { mix-blend-mode: multiply; width: 100%; }
+.over__tekst { padding-bottom: var(--sectie); align-self: center; }
+.over__tekst p { margin-top: 22px; color: #2b2b2b; }
+@media (max-width: 760px) {
+  .over__in { grid-template-columns: 1fr; }
+  .over__tekst { order: -1; padding-bottom: 8px; }
+  .over__foto { max-width: 420px; margin-inline: auto; }
+}
+@media (max-width: 480px) {
+  .over__foto { max-width: none; width: calc(100% + 2 * var(--rand)); margin-inline: calc(-1 * var(--rand)); }
+}
+
+/* ---------- Contact ---------- */
+.contact__in { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(40px, 7vw, 112px); margin-top: clamp(36px, 5vw, 64px); }
+.kanalen { list-style: none; margin: 0; padding: 0; }
+.kanalen a {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 24px;
+  padding-block: 24px; border-top: 1px solid var(--lijn);
+  text-decoration: none;
+}
+.kanalen li:last-child a { border-bottom: 1px solid var(--lijn); }
+.kanalen span:first-child { color: var(--staal); }
+.kanalen span:last-child { font-weight: 800; font-stretch: 125%; font-size: clamp(1.25rem, 2.6vw, 2rem); letter-spacing: -.01em; overflow-wrap: anywhere; }
+.kanalen a:hover span:last-child { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.gegevens { display: grid; gap: 28px; align-content: start; margin: 0; }
+.gegevens dt { font-size: .875rem; color: var(--staal); }
+.gegevens dd { margin: 4px 0 0; }
+.gegevens a { text-underline-offset: 4px; }
+.gegevens .rij { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+@media (max-width: 900px) { .contact__in { grid-template-columns: 1fr; } }
+
+/* ---------- Voet ---------- */
+.voet { border-top: 1px solid var(--lijn); padding-block: 40px; }
+.voet__in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.voet img { height: 76px; width: auto; }
+.voet p { font-size: .875rem; color: var(--staal); }
+</style>
+</head>
+
+<body>
+
+<header class="kop" id="kop">
+  <div class="wrap kop__in">
+    <a class="kop__logo" href="#top" aria-label="WB-Sports, naar boven">
+      <img src="img/logo-mark.png" alt="WB-Sports" width="590" height="330">
+    </a>
+    <nav class="kop__nav" aria-label="Hoofdmenu">
+      <a href="#aanbod">Aanbod</a>
+      <a href="#studio">Studio</a>
+      <a href="#over">Over</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="knop knop--klein" href="#contact" data-link="whatsapp">Gratis intake</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <img class="hero__beeld" src="img/hero.jpg" alt="De overdekte trainingsstudio van WB-Sports, verlicht in de avond" width="1600" height="1200" fetchpriority="high">
+    <div class="wrap hero__tekst">
+      <h1>Personal training in Tilburg.</h1>
+      <p>Bij WB-Sports train je één op één of in een groep, in een eigen studio in De Blaak. De intake is gratis.</p>
+      <div class="hero__knoppen">
+        <a class="knop" href="#contact" data-link="whatsapp">Plan je gratis intake</a>
+        <a class="knop knop--open" href="#aanbod">Bekijk het aanbod</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <dl class="feiten">
+        <div><dt>Intake</dt><dd>Gratis</dd></div>
+        <div><dt>Prijzen</dt><dd>Op aanvraag</dd></div>
+        <div><dt>Tijden</dt><dd>08.00 tot 22.00 uur</dd></div>
+        <div><dt>Adres</dt><dd>Dintel 43, De Blaak</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sectie" id="aanbod">
+    <div class="wrap aanbod__in">
+      <div class="aanbod__intro">
+        <h2>Aanbod</h2>
+        <p class="zacht lees">Kies wat bij je past. Tijdens de intake stemmen we alles samen af.</p>
+      </div>
+      <ul class="aanbod__lijst">
+        <li>
+          <h3>Personal training</h3>
+          <div>
+            <p>Eén op één, met volledige aandacht. Samen bepalen we de invulling van je traject en leggen we je doelen vooraf vast.</p>
+            <p>Sterker worden, je conditie verbeteren, minder stress, revalideren na een operatie of ziekte, of gewoon meer energie: we stemmen alles op jou af.</p>
+            <p class="tussenkop">Wat je krijgt</p>
+            <ul class="punten">
+              <li>Persoonlijke intake met een duidelijke doelstelling</li>
+              <li>Voedingsadvies en leefstijlcoaching</li>
+              <li>Ongeveer elke vier weken een voortgangsmeting</li>
+              <li>Een betrokken coach die 100% voor jouw doel gaat</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <h3>Voeding</h3>
+          <div>
+            <p>Voedingsadvies en leefstijlcoaching, met een voedingsschema op maat dat past bij jouw doel en je dagelijks leven.</p>
+          </div>
+        </li>
+        <li>
+          <h3>Groepstraining</h3>
+          <div>
+            <p>Small group training met maximaal 8 personen. Samen werken aan krachtopbouw, conditie en lichaamstransformatie.</p>
+            <p class="tussenkop">Tijden</p>
+            <!-- AANPASSEN: groepstijden, overgenomen van de oude site -->
+            <dl class="rooster">
+              <dt>Maandag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
+              <dt>Woensdag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
+              <dt>Vrijdag</dt><dd>Gemengd 19.00 tot 20.00</dd>
+              <dt>Zaterdag</dt><dd>Gemengd 10.00 tot 11.00</dd>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="intake" aria-labelledby="intake-kop">
+    <div class="wrap intake__in">
+      <h2 id="intake-kop">De eerste afspraak is gratis.</h2>
+      <div>
+        <p class="lees">In de intake bespreken we je doel, je ervaring en wat bij je past. Daarna hoor je wat het kost. Prijzen zijn op aanvraag.</p>
+        <a class="knop" href="#contact" data-link="whatsapp">Plan je intake via WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie" id="studio">
+    <div class="wrap">
+      <div class="studio__kop">
+        <h2>De studio</h2>
+        <p class="zacht lees">Een eigen trainingsruimte aan de Dintel, half binnen en half buiten. Rekken, halters, kabels en kettlebells, met een veld voor de deur.</p>
+      </div>
+      <div class="galerij">
+        <img class="galerij__a" src="img/studio.jpg" alt="Trainingsruimte met squatrek, halterbank en kabelstation" width="1000" height="1333" loading="lazy">
+        <img class="galerij__b" src="img/dumbbells.jpg" alt="Rek met dumbbells" width="1400" height="933" loading="lazy">
+        <img class="galerij__c" src="img/kettlebell.jpg" alt="Kettlebells van 12 kilo in de buitenlucht" width="900" height="1351" loading="lazy">
+        <img class="galerij__d" src="img/barbell.jpg" alt="Halter op het kunstgrasveld voor de studio" width="900" height="1351" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="over" id="over">
+    <div class="wrap over__in">
+      <img class="over__foto" src="img/trainer.jpg" alt="De trainer van WB-Sports" width="480" height="640" loading="lazy">
+      <div class="over__tekst">
+        <h2>Ik ga er 100% voor om jouw doel te halen.</h2>
+        <!-- AANPASSEN: zet hier eventueel de naam en achtergrond van de trainer, bijvoorbeeld opleiding en ervaring. -->
+        <p class="lees">Bij WB-Sports train je altijd met mij. Ik focus op kwaliteit: we leggen je doel vooraf vast, ik bewaak je voortgang en stuur bij waar dat nodig is.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectie" id="contact">
+    <div class="wrap">
+      <h2>Plan je gratis intake.</h2>
+      <div class="contact__in">
+        <ul class="kanalen">
+          <li><a href="#contact" data-link="whatsapp"><span>WhatsApp</span><span data-tekst="telefoon">06 00 00 00 00</span></a></li>
+          <li><a href="#contact" data-link="bellen"><span>Bellen</span><span data-tekst="telefoon">06 00 00 00 00</span></a></li>
+          <li><a href="#contact" data-link="mail"><span>Mailen</span><span data-tekst="email">info@wb-sports.nl</span></a></li>
+        </ul>
+        <dl class="gegevens">
+          <div>
+            <dt>Adres</dt>
+            <dd>Dintel 43, De Blaak<br>Tilburg</dd>
+            <dd><a href="https://www.google.com/maps/search/?api=1&query=Dintel+43+Tilburg" target="_blank" rel="noopener">Route plannen</a></dd>
+          </div>
+          <div>
+            <dt>Tijden</dt>
+            <dd>08.00 tot 22.00 uur</dd>
+          </div>
+          <div id="socials">
+            <dt>Volg WB-Sports</dt>
+            <dd class="rij">
+              <a href="#" data-link="instagram" target="_blank" rel="noopener">Instagram</a>
+              <a href="#" data-link="facebook" target="_blank" rel="noopener">Facebook</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="voet">
+  <div class="wrap voet__in">
+    <img src="img/logo.png" alt="WB-Sports" width="590" height="430" loading="lazy">
+    <p>&copy; 2026 WB-Sports, Dintel 43, Tilburg</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   AANPASSEN: alle contactgegevens staan alleen hier.
+   ============================================================ */
+const WB = {
+  telefoon: "06 00 00 00 00",           // zoals het op de site getoond wordt
+  telefoonInternationaal: "31600000000", // zonder + en zonder spaties (31 6 ...)
+  email: "info@wb-sports.nl",
+  instagram: "https://www.instagram.com/werner_bulten/", // leeg laten verbergt de link
+  facebook: "",                          // volledige link, leeg laten verbergt de link
+  whatsappBericht: "Hoi, ik wil graag een gratis intake plannen."
+};
+
+const links = {
+  whatsapp: "https://wa.me/" + WB.telefoonInternationaal + "?text=" + encodeURIComponent(WB.whatsappBericht),
+  bellen: "tel:+" + WB.telefoonInternationaal,
+  mail: "mailto:" + WB.email,
+  instagram: WB.instagram,
+  facebook: WB.facebook
+};
+
+document.querySelectorAll("[data-link]").forEach(function (a) {
+  const doel = links[a.dataset.link];
+  if (doel) {
+    a.href = doel;
+    if (a.dataset.link === "whatsapp") { a.target = "_blank"; a.rel = "noopener"; }
+  } else {
+    a.remove();
+  }
+});
+document.querySelectorAll("[data-tekst]").forEach(function (el) {
+  el.textContent = WB[el.dataset.tekst];
+});
+if (!WB.instagram && !WB.facebook) document.getElementById("socials").remove();
+
+/* Kop krijgt een zwarte achtergrond zodra je scrolt */
+const kop = document.getElementById("kop");
+const zetKop = function () { kop.classList.toggle("is-dicht", window.scrollY > 40); };
+zetKop();
+window.addEventListener("scroll", zetKop, { passive: true });
+</script>
+</body>
+</html>
