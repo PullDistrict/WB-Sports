@@ -33,12 +33,13 @@
   --hout: #151515;
   --wit: #fff;
   --staal: #a3a3a3;
+  --tekst: #d6d6d6;
   --lijn: rgba(255, 255, 255, .18);
-  --gras: #1d3a2a;
-  --gras-tekst: #cfe0d4;
 
-  --rand: clamp(20px, 5vw, 48px);
+  --rand: clamp(20px, 5vw, 48px);    /* marge links en rechts */
+  --g: clamp(20px, 3.4vw, 48px);     /* ruimte tussen kolommen, overal gelijk */
   --sectie: clamp(72px, 10vw, 136px);
+  --kop-onder: clamp(32px, 5vw, 56px);
   --breed: 1200px;
 }
 
@@ -68,12 +69,17 @@ h1, h2, h3 {
 }
 h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); }
 h2 { font-size: clamp(1.9rem, 4.4vw, 3.4rem); }
-h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
+h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 
 .wrap { width: 100%; max-width: var(--breed); margin-inline: auto; padding-inline: var(--rand); }
 .sectie { padding-block: var(--sectie); }
 .zacht { color: var(--staal); }
-.lees { max-width: 34em; }
+
+/* Eén raster voor de hele pagina: drie gelijke kolommen */
+.raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--g); }
+.raster > .k12 { grid-column: 1 / span 2; }
+.raster > .k23 { grid-column: 2 / span 2; }
+.raster > .k3 { grid-column: 3; }
 
 /* ---------- Knoppen ---------- */
 .knop {
@@ -91,10 +97,7 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
 .knop--klein { min-height: 42px; padding: 0 20px; font-size: .9375rem; }
 
 /* ---------- Kop ---------- */
-.kop {
-  position: fixed; inset: 0 0 auto 0; z-index: 10;
-  transition: background-color .2s;
-}
+.kop { position: fixed; inset: 0 0 auto 0; z-index: 10; transition: background-color .2s; }
 .kop.is-dicht { background: rgba(0, 0, 0, .92); backdrop-filter: blur(8px); }
 .kop__in { display: flex; align-items: center; gap: 32px; height: 72px; }
 .kop__logo { display: flex; align-items: center; margin-right: auto; }
@@ -117,27 +120,29 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
 }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background:
-    linear-gradient(to top, #000 0%, rgba(0, 0, 0, .72) 38%, rgba(0, 0, 0, .28) 72%, rgba(0, 0, 0, .55) 100%);
+  background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, .72) 38%, rgba(0, 0, 0, .28) 72%, rgba(0, 0, 0, .55) 100%);
 }
 .hero__tekst { padding-bottom: clamp(36px, 6vw, 72px); }
 .hero__tekst p { margin-top: 24px; max-width: 32em; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: #e4e4e4; }
 .hero__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
 .feiten {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--g);
   margin: 0; border-top: 1px solid var(--lijn);
 }
-.feiten div { padding: 22px 20px 26px 0; }
-.feiten div + div { padding-left: 20px; border-left: 1px solid var(--lijn); }
+.feiten > div { position: relative; padding: 22px 0 26px; }
+.feiten > div + div::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--g) / -2);
+  width: 1px; background: var(--lijn);
+}
 .feiten dt { font-size: .875rem; color: var(--staal); }
 .feiten dd { margin: 2px 0 0; font-weight: 700; font-stretch: 112%; font-size: clamp(1rem, 1.6vw, 1.25rem); }
 @media (max-width: 760px) {
-  .feiten { grid-template-columns: 1fr 1fr; }
-  .feiten div { padding: 16px 12px 18px 0; }
-  .feiten div + div { padding-left: 0; border-left: 0; }
-  .feiten div:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--lijn); }
-  .feiten div:nth-child(n+3) { border-top: 1px solid var(--lijn); }
+  .feiten { grid-template-columns: 1fr 1fr; column-gap: 0; }
+  .feiten > div { padding: 16px 12px 18px 0; }
+  .feiten > div + div::before { display: none; }
+  .feiten > div:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--lijn); }
+  .feiten > div:nth-child(n+3) { border-top: 1px solid var(--lijn); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -147,61 +152,83 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
   @keyframes op { from { opacity: 0; transform: translateY(18px); } }
 }
 
-/* ---------- Aanbod ---------- */
-.aanbod__in { display: grid; grid-template-columns: 1fr 1.7fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
-.aanbod__intro p { margin-top: 20px; }
-@media (min-width: 901px) { .aanbod__intro { position: sticky; top: 112px; } }
-.aanbod__lijst { list-style: none; margin: 0; padding: 0; }
-.aanbod__lijst > li {
-  display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px 32px;
-  padding-block: 30px; border-top: 1px solid var(--lijn);
+/* ---------- Sectiekop: titel links, korte uitleg in de derde kolom ---------- */
+.sectiekop { align-items: end; row-gap: 16px; margin-bottom: var(--kop-onder); }
+@media (max-width: 760px) {
+  .sectiekop { grid-template-columns: 1fr; }
+  .sectiekop > .k12, .sectiekop > .k3 { grid-column: 1; }
 }
-.aanbod__lijst > li:last-child { border-bottom: 1px solid var(--lijn); }
-.aanbod__lijst p { color: #d6d6d6; }
-.aanbod__lijst p + p { margin-top: 14px; }
-.aanbod__lijst .tussenkop { margin-top: 24px; color: var(--wit); font-weight: 700; }
-.punten { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; color: #d6d6d6; }
+
+/* ---------- Aanbod ---------- */
+.aanbod {
+  list-style: none; margin: 0; padding: 0;
+  grid-template-rows: repeat(4, auto);
+  border-top: 1px solid var(--lijn);
+}
+.aanbod > li {
+  position: relative;
+  display: grid; grid-row: span 4; grid-template-rows: subgrid; align-content: start;
+  padding-top: 28px;
+}
+.aanbod > li + li::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--g) / -2);
+  width: 1px; background: var(--lijn);
+}
+.aanbod p { margin-top: 16px; color: var(--tekst); }
+.aanbod .tussenkop { margin-top: 28px; color: var(--wit); font-weight: 700; }
+.punten { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; color: var(--tekst); }
 .punten li { position: relative; padding-left: 22px; }
 .punten li::before { content: ""; position: absolute; left: 0; top: .72em; width: 10px; height: 2px; background: var(--wit); }
-.rooster { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; margin: 12px 0 0; color: #d6d6d6; }
+.rooster { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; align-content: start; margin: 12px 0 0; color: var(--tekst); }
 .rooster dt { color: var(--wit); font-weight: 600; }
 .rooster dd { margin: 0; }
-@media (max-width: 900px) { .aanbod__in { grid-template-columns: 1fr; } }
-@media (max-width: 560px) { .aanbod__lijst > li { grid-template-columns: 1fr; padding-block: 24px; } }
+@media (max-width: 960px) {
+  /* Onder elkaar: titel in kolom 1, inhoud in kolom 2 en 3 */
+  .aanbod { display: block; border-top: 0; }
+  .aanbod > li {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: none; column-gap: var(--g);
+    padding-block: 28px; border-top: 1px solid var(--lijn);
+  }
+  .aanbod > li + li::before { display: none; }
+  .aanbod > li > h3 { grid-column: 1; grid-row: 1 / span 3; }
+  .aanbod > li > :not(h3) { grid-column: 2 / span 2; }
+  .aanbod > li > h3 + p { margin-top: 0; }
+}
+@media (max-width: 600px) {
+  .aanbod > li { display: block; padding-block: 24px; }
+  .aanbod > li > h3 + p { margin-top: 12px; }
+}
 
 /* ---------- Intake ---------- */
-.intake { background: var(--gras); padding-block: clamp(56px, 8vw, 104px); }
-.intake__in { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(28px, 6vw, 96px); align-items: end; }
-.intake p { color: var(--gras-tekst); }
-.intake .knop { margin-top: 28px; }
-@media (max-width: 900px) { .intake__in { grid-template-columns: 1fr; align-items: start; } }
+.intake { background: var(--hout); padding-block: clamp(56px, 8vw, 104px); }
+.intake__in { align-items: end; row-gap: 20px; }
+.intake p { color: var(--tekst); }
+.intake .knop { margin-top: 24px; }
+@media (max-width: 900px) {
+  .intake__in { grid-template-columns: 1fr; }
+  .intake__in > .k12, .intake__in > .k3 { grid-column: 1; }
+  .intake p { max-width: 34em; }
+}
 
 /* ---------- Studio ---------- */
-.studio__kop { display: grid; grid-template-columns: 1fr 1fr; gap: 20px clamp(32px, 6vw, 96px); align-items: end; margin-bottom: clamp(32px, 5vw, 56px); }
-.galerij {
-  display: grid; gap: 12px;
-  grid-template-columns: 1.25fr 1fr 1fr;
-  grid-template-rows: auto auto;
-}
-.galerij img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; background: var(--hout); }
-.galerij__a { grid-row: 1 / 3; aspect-ratio: 3 / 4; }
-.galerij__b { grid-column: 2 / 4; }
+.galerij { row-gap: var(--g); }
+.galerij img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; border-radius: 4px; background: var(--hout); }
+.galerij .galerij__breed { grid-column: 1 / -1; aspect-ratio: 12 / 5; }
 @media (max-width: 760px) {
-  .studio__kop { grid-template-columns: 1fr; }
-  .galerij { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .galerij__a { grid-row: auto; grid-column: 1 / 3; aspect-ratio: 4 / 5; }
-  .galerij__b { grid-column: 1 / 3; aspect-ratio: 3 / 2; }
-  .galerij__c, .galerij__d { aspect-ratio: 3 / 4; }
+  .galerij { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .galerij .galerij__a { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+  .galerij .galerij__breed { aspect-ratio: 3 / 2; }
 }
 
 /* ---------- Over ---------- */
-.over { background: var(--wit); color: var(--zwart); padding-top: var(--sectie); overflow: hidden; }
-.over__in { display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: clamp(32px, 7vw, 112px); align-items: end; }
+.over { background: var(--wit); color: var(--zwart); padding-top: clamp(40px, 5vw, 72px); overflow: hidden; }
+.over__in { align-items: end; }
 .over__foto { mix-blend-mode: multiply; width: 100%; }
-.over__tekst { padding-bottom: var(--sectie); align-self: center; }
-.over__tekst p { margin-top: 22px; color: #2b2b2b; }
+.over__tekst { align-self: center; padding-bottom: clamp(40px, 6vw, 80px); }
+.over__tekst p { margin-top: 22px; max-width: 34em; color: #2b2b2b; }
 @media (max-width: 760px) {
   .over__in { grid-template-columns: 1fr; }
+  .over__in > .k23 { grid-column: 1; }
   .over__tekst { order: -1; padding-bottom: 8px; }
   .over__foto { max-width: 420px; margin-inline: auto; }
 }
@@ -210,23 +237,27 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
 }
 
 /* ---------- Contact ---------- */
-.contact__in { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(40px, 7vw, 112px); margin-top: clamp(36px, 5vw, 64px); }
+.contact h2 { margin-bottom: var(--kop-onder); }
+.contact__in { align-items: start; }
 .kanalen { list-style: none; margin: 0; padding: 0; }
 .kanalen a {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 24px;
   padding-block: 24px; border-top: 1px solid var(--lijn);
   text-decoration: none;
 }
-.kanalen li:last-child a { border-bottom: 1px solid var(--lijn); }
 .kanalen span:first-child { color: var(--staal); }
-.kanalen span:last-child { font-weight: 800; font-stretch: 125%; font-size: clamp(1.25rem, 2.6vw, 2rem); letter-spacing: -.01em; overflow-wrap: anywhere; }
+.kanalen span:last-child { font-weight: 800; font-stretch: 125%; font-size: clamp(1.25rem, 2.6vw, 2rem); line-height: 1.2; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .kanalen a:hover span:last-child { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
-.gegevens { display: grid; gap: 28px; align-content: start; margin: 0; }
+.gegevens { margin: 0; }
+.gegevens > div { padding-block: 24px; border-top: 1px solid var(--lijn); }
 .gegevens dt { font-size: .875rem; color: var(--staal); }
 .gegevens dd { margin: 4px 0 0; }
 .gegevens a { text-underline-offset: 4px; }
 .gegevens .rij { display: flex; flex-wrap: wrap; gap: 6px 20px; }
-@media (max-width: 900px) { .contact__in { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .contact__in { grid-template-columns: 1fr; }
+  .contact__in > .k12, .contact__in > .k3 { grid-column: 1; }
+}
 
 /* ---------- Voet ---------- */
 .voet { border-top: 1px solid var(--lijn); padding-block: 40px; }
@@ -276,99 +307,98 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
   </section>
 
   <section class="sectie" id="aanbod">
-    <div class="wrap aanbod__in">
-      <div class="aanbod__intro">
-        <h2>Aanbod</h2>
-        <p class="zacht lees">Kies wat bij je past. Tijdens de intake stemmen we alles samen af.</p>
+    <div class="wrap">
+      <div class="raster sectiekop">
+        <h2 class="k12">Aanbod</h2>
+        <p class="k3 zacht">Kies wat bij je past. Tijdens de intake stemmen we alles samen af.</p>
       </div>
-      <ul class="aanbod__lijst">
+      <ul class="raster aanbod">
         <li>
           <h3>Personal training</h3>
-          <div>
-            <p>Eén op één, met volledige aandacht. Samen bepalen we de invulling van je traject en leggen we je doelen vooraf vast.</p>
-            <p>Sterker worden, je conditie verbeteren, minder stress, revalideren na een operatie of ziekte, of gewoon meer energie: we stemmen alles op jou af.</p>
-            <p class="tussenkop">Wat je krijgt</p>
-            <ul class="punten">
-              <li>Persoonlijke intake met een duidelijke doelstelling</li>
-              <li>Voedingsadvies en leefstijlcoaching</li>
-              <li>Ongeveer elke vier weken een voortgangsmeting</li>
-              <li>Een betrokken coach die 100% voor jouw doel gaat</li>
-            </ul>
-          </div>
+          <p>Eén op één, met volledige aandacht. Samen leggen we je doel vooraf vast: sterker worden, een betere conditie, minder stress, revalidatie of meer energie.</p>
+          <p class="tussenkop">Wat je krijgt</p>
+          <ul class="punten">
+            <li>Persoonlijke intake met een duidelijk doel</li>
+            <li>Voedingsadvies en leefstijlcoaching</li>
+            <li>Elke vier weken een voortgangsmeting</li>
+            <li>Een coach die 100% voor jouw doel gaat</li>
+          </ul>
         </li>
         <li>
           <h3>Voeding</h3>
-          <div>
-            <p>Voedingsadvies en leefstijlcoaching, met een voedingsschema op maat dat past bij jouw doel en je dagelijks leven.</p>
-          </div>
+          <p>Voedingsadvies en leefstijlcoaching die passen bij jouw doel en je dagelijks leven. Zo ondersteunt wat je eet het werk dat je in je training steekt.</p>
+          <p class="tussenkop">Wat je krijgt</p>
+          <ul class="punten">
+            <li>Voedingsschema op maat</li>
+            <li>Leefstijlcoaching</li>
+            <li>Huidplooimeting om je voortgang te volgen</li>
+          </ul>
         </li>
         <li>
           <h3>Groepstraining</h3>
-          <div>
-            <p>Small group training met maximaal 8 personen. Samen werken aan krachtopbouw, conditie en lichaamstransformatie.</p>
-            <p class="tussenkop">Tijden</p>
-            <!-- AANPASSEN: groepstijden, overgenomen van de oude site -->
-            <dl class="rooster">
-              <dt>Maandag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
-              <dt>Woensdag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
-              <dt>Vrijdag</dt><dd>Gemengd 19.00 tot 20.00</dd>
-              <dt>Zaterdag</dt><dd>Gemengd 10.00 tot 11.00</dd>
-            </dl>
-          </div>
+          <p>Small group training met maximaal 8 personen. Samen werken aan krachtopbouw, conditie en lichaamstransformatie.</p>
+          <p class="tussenkop">Tijden</p>
+          <!-- AANPASSEN: groepstijden, overgenomen van de oude site -->
+          <dl class="rooster">
+            <dt>Maandag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
+            <dt>Woensdag</dt><dd>Dames 19.00 tot 20.00<br>Heren 20.00 tot 21.00</dd>
+            <dt>Vrijdag</dt><dd>Gemengd 19.00 tot 20.00</dd>
+            <dt>Zaterdag</dt><dd>Gemengd 10.00 tot 11.00</dd>
+          </dl>
         </li>
       </ul>
     </div>
   </section>
 
   <section class="intake" aria-labelledby="intake-kop">
-    <div class="wrap intake__in">
-      <h2 id="intake-kop">De eerste afspraak is gratis.</h2>
-      <div>
-        <p class="lees">In de intake bespreken we je doel, je ervaring en wat bij je past. Daarna hoor je wat het kost. Prijzen zijn op aanvraag.</p>
-        <a class="knop" href="#contact" data-link="whatsapp">Plan je intake via WhatsApp</a>
+    <div class="wrap raster intake__in">
+      <h2 class="k12" id="intake-kop">De eerste afspraak is gratis.</h2>
+      <div class="k3">
+        <p>In de intake bespreken we je doel, je ervaring en wat bij je past. Daarna hoor je wat het kost. Prijzen zijn op aanvraag.</p>
+        <a class="knop" href="#contact" data-link="whatsapp">Plan je gratis intake</a>
       </div>
     </div>
   </section>
 
   <section class="sectie" id="studio">
     <div class="wrap">
-      <div class="studio__kop">
-        <h2>De studio</h2>
-        <p class="zacht lees">Een eigen trainingsruimte aan de Dintel, half binnen en half buiten. Rekken, halters, kabels en kettlebells, met een veld voor de deur.</p>
+      <div class="raster sectiekop">
+        <h2 class="k12">De studio</h2>
+        <p class="k3 zacht">Een eigen trainingsruimte aan de Dintel, half binnen en half buiten, met een veld voor de deur.</p>
       </div>
-      <div class="galerij">
+      <div class="raster galerij">
         <img class="galerij__a" src="studio.jpg" alt="Trainingsruimte met squatrek, halterbank en kabelstation" width="1000" height="1333" loading="lazy">
-        <img class="galerij__b" src="dumbbells.jpg" alt="Rek met dumbbells" width="1400" height="933" loading="lazy">
-        <img class="galerij__c" src="kettlebell.jpg" alt="Kettlebells van 12 kilo in de buitenlucht" width="900" height="1351" loading="lazy">
-        <img class="galerij__d" src="barbell.jpg" alt="Halter op het kunstgrasveld voor de studio" width="900" height="1351" loading="lazy">
+        <img src="kettlebell.jpg" alt="Kettlebells van 12 kilo in de buitenlucht" width="900" height="1351" loading="lazy">
+        <img src="barbell.jpg" alt="Halter op het kunstgrasveld voor de studio" width="900" height="1351" loading="lazy">
+        <img class="galerij__breed" src="dumbbells.jpg" alt="Rek met dumbbells" width="1400" height="933" loading="lazy">
       </div>
     </div>
   </section>
 
   <section class="over" id="over">
-    <div class="wrap over__in">
-      <img class="over__foto" src="trainer.jpg" alt="De trainer van WB-Sports" width="480" height="640" loading="lazy">
-      <div class="over__tekst">
+    <div class="wrap raster over__in">
+      <img class="over__foto" src="trainer.jpg" alt="Werner, trainer bij WB-Sports" width="480" height="640" loading="lazy">
+      <div class="k23 over__tekst">
         <h2>Ik ga er 100% voor om jouw doel te halen.</h2>
         <!-- AANPASSEN: zet hier eventueel de naam en achtergrond van de trainer, bijvoorbeeld opleiding en ervaring. -->
-        <p class="lees">Bij WB-Sports train je altijd met mij. Ik focus op kwaliteit: we leggen je doel vooraf vast, ik bewaak je voortgang en stuur bij waar dat nodig is.</p>
+        <p>Bij WB-Sports train je altijd met mij. Ik focus op kwaliteit: we leggen je doel vooraf vast, ik bewaak je voortgang en stuur bij waar dat nodig is.</p>
       </div>
     </div>
   </section>
 
-  <section class="sectie" id="contact">
+  <section class="sectie contact" id="contact">
     <div class="wrap">
       <h2>Plan je gratis intake.</h2>
-      <div class="contact__in">
-        <ul class="kanalen">
-          <li><a href="#contact" data-link="whatsapp"><span>WhatsApp</span><span data-tekst="telefoon">06 00 00 00 00</span></a></li>
-          <li><a href="#contact" data-link="bellen"><span>Bellen</span><span data-tekst="telefoon">06 00 00 00 00</span></a></li>
+      <div class="raster contact__in">
+        <ul class="k12 kanalen">
+          <li><a href="#contact" data-link="whatsapp"><span>WhatsApp</span><span data-tekst="telefoon">06 13 09 49 85</span></a></li>
+          <li><a href="#contact" data-link="bellen"><span>Bellen</span><span data-tekst="telefoon">06 13 09 49 85</span></a></li>
           <li><a href="#contact" data-link="mail"><span>Mailen</span><span data-tekst="email">info@wb-sports.nl</span></a></li>
         </ul>
-        <dl class="gegevens">
+        <dl class="k3 gegevens">
           <div>
             <dt>Adres</dt>
-            <dd>Dintel 43, De Blaak<br>Tilburg</dd>
+            <dd>Dintel 43, De Blaak, Tilburg</dd>
             <dd><a href="https://www.google.com/maps/search/?api=1&query=Dintel+43+Tilburg" target="_blank" rel="noopener">Route plannen</a></dd>
           </div>
           <div>
@@ -379,7 +409,6 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
             <dt>Volg WB-Sports</dt>
             <dd class="rij">
               <a href="#" data-link="instagram" target="_blank" rel="noopener">Instagram</a>
-              <a href="#" data-link="facebook" target="_blank" rel="noopener">Facebook</a>
             </dd>
           </div>
         </dl>
@@ -401,11 +430,10 @@ h3 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.15; }
    AANPASSEN: alle contactgegevens staan alleen hier.
    ============================================================ */
 const WB = {
-  telefoon: "06 00 00 00 00",           // zoals het op de site getoond wordt
-  telefoonInternationaal: "31600000000", // zonder + en zonder spaties (31 6 ...)
+  telefoon: "06 13 09 49 85",           // zoals het op de site getoond wordt
+  telefoonInternationaal: "31613094985", // zonder + en zonder spaties (31 6 ...)
   email: "info@wb-sports.nl",
   instagram: "https://www.instagram.com/werner_bulten/", // leeg laten verbergt de link
-  facebook: "",                          // volledige link, leeg laten verbergt de link
   whatsappBericht: "Hoi, ik wil graag een gratis intake plannen."
 };
 
@@ -413,8 +441,7 @@ const links = {
   whatsapp: "https://wa.me/" + WB.telefoonInternationaal + "?text=" + encodeURIComponent(WB.whatsappBericht),
   bellen: "tel:+" + WB.telefoonInternationaal,
   mail: "mailto:" + WB.email,
-  instagram: WB.instagram,
-  facebook: WB.facebook
+  instagram: WB.instagram
 };
 
 document.querySelectorAll("[data-link]").forEach(function (a) {
@@ -429,7 +456,7 @@ document.querySelectorAll("[data-link]").forEach(function (a) {
 document.querySelectorAll("[data-tekst]").forEach(function (el) {
   el.textContent = WB[el.dataset.tekst];
 });
-if (!WB.instagram && !WB.facebook) document.getElementById("socials").remove();
+if (!WB.instagram) document.getElementById("socials").remove();
 
 /* Kop krijgt een zwarte achtergrond zodra je scrolt */
 const kop = document.getElementById("kop");
