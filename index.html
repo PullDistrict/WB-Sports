@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WB-Sports | Personal training in Tilburg</title>
 <meta name="description" content="Personal training, voedingsbegeleiding en groepstraining in een eigen studio in De Blaak, Tilburg. De intake is gratis, prijzen op aanvraag.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://www.wb-sports.nl/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
@@ -29,12 +29,12 @@
 
 /* ---------- Kleuren en maten ---------- */
 :root {
-  --zwart: #000;
-  --hout: #151515;
-  --wit: #fff;
-  --staal: #a3a3a3;
-  --tekst: #d6d6d6;
-  --lijn: rgba(255, 255, 255, .18);
+  --bg: #fff;          /* achtergrond */
+  --fg: #000;          /* koppen en knoppen */
+  --tekst: #2b2b2b;    /* lopende tekst */
+  --zacht: #6b6b6b;    /* labels en bijzinnen */
+  --vlak: #f2f2f2;     /* lichtgrijze band */
+  --lijn: rgba(0, 0, 0, .14);
 
   --rand: clamp(20px, 5vw, 48px);    /* marge links en rechts */
   --g: clamp(20px, 3.4vw, 48px);     /* ruimte tussen kolommen, overal gelijk */
@@ -47,8 +47,8 @@
 html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--zwart);
-  color: var(--wit);
+  background: var(--bg);
+  color: var(--fg);
   font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
   font-size: 1.0625rem;
   line-height: 1.55;
@@ -73,7 +73,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 
 .wrap { width: 100%; max-width: var(--breed); margin-inline: auto; padding-inline: var(--rand); }
 .sectie { padding-block: var(--sectie); }
-.zacht { color: var(--staal); }
+.zacht { color: var(--zacht); }
 
 /* Eén raster voor de hele pagina: drie gelijke kolommen */
 .raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--g); }
@@ -81,24 +81,33 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 .raster > .k23 { grid-column: 2 / span 2; }
 .raster > .k3 { grid-column: 3; }
 
-/* ---------- Knoppen ---------- */
+/* ---------- Knoppen (zwart op licht, wit op de foto) ---------- */
 .knop {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 52px; padding: 0 28px;
-  border: 1.5px solid var(--wit); border-radius: 999px;
-  background: var(--wit); color: var(--zwart);
+  border: 1.5px solid var(--fg); border-radius: 999px;
+  background: var(--fg); color: var(--bg);
   font-weight: 700; font-stretch: 112%; font-size: 1rem;
   text-decoration: none; white-space: nowrap;
-  transition: background-color .15s, color .15s;
+  transition: background-color .15s, color .15s, border-color .15s;
 }
-.knop:hover { background: transparent; color: var(--wit); }
-.knop--open { background: transparent; color: var(--wit); border-color: rgba(255, 255, 255, .55); }
-.knop--open:hover { background: var(--wit); color: var(--zwart); border-color: var(--wit); }
+.knop:hover { background: transparent; color: var(--fg); }
+.knop--open { background: transparent; color: var(--fg); border-color: rgba(0, 0, 0, .4); }
+.knop--open:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .knop--klein { min-height: 42px; padding: 0 20px; font-size: .9375rem; }
 
+/* Op de donkere foto draaien de kleuren om */
+.op-foto { --bg: #000; --fg: #fff; --zacht: #b5b5b5; --lijn: rgba(255, 255, 255, .22); color: var(--fg); }
+.op-foto .knop--open { border-color: rgba(255, 255, 255, .6); }
+
 /* ---------- Kop ---------- */
-.kop { position: fixed; inset: 0 0 auto 0; z-index: 10; transition: background-color .2s; }
-.kop.is-dicht { background: rgba(0, 0, 0, .92); backdrop-filter: blur(8px); }
+.kop { position: fixed; inset: 0 0 auto 0; z-index: 10; transition: background-color .2s, color .2s; }
+.kop.is-dicht {
+  --bg: #fff; --fg: #000; color: var(--fg);
+  background: rgba(255, 255, 255, .94); backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+}
+.kop.is-dicht .kop__logo img { filter: invert(1); }
 .kop__in { display: flex; align-items: center; gap: 32px; height: 72px; }
 .kop__logo { display: flex; align-items: center; margin-right: auto; }
 .kop__logo img { height: 42px; width: auto; }
@@ -113,6 +122,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
   min-height: 100vh; min-height: 100svh;
   display: flex; flex-direction: column; justify-content: flex-end;
   padding-top: 120px;
+  background: #000;
 }
 .hero__beeld {
   position: absolute; inset: 0; z-index: -2;
@@ -120,10 +130,10 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 }
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, .72) 38%, rgba(0, 0, 0, .28) 72%, rgba(0, 0, 0, .55) 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, .9) 0%, rgba(0, 0, 0, .55) 38%, rgba(0, 0, 0, .12) 72%, rgba(0, 0, 0, .4) 100%);
 }
 .hero__tekst { padding-bottom: clamp(36px, 6vw, 72px); }
-.hero__tekst p { margin-top: 24px; max-width: 32em; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: #e4e4e4; }
+.hero__tekst p { margin-top: 24px; max-width: 32em; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: #ececec; }
 .hero__knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
 .feiten {
@@ -135,7 +145,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
   content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--g) / -2);
   width: 1px; background: var(--lijn);
 }
-.feiten dt { font-size: .875rem; color: var(--staal); }
+.feiten dt { font-size: .875rem; color: var(--zacht); }
 .feiten dd { margin: 2px 0 0; font-weight: 700; font-stretch: 112%; font-size: clamp(1rem, 1.6vw, 1.25rem); }
 @media (max-width: 760px) {
   .feiten { grid-template-columns: 1fr 1fr; column-gap: 0; }
@@ -175,12 +185,12 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
   width: 1px; background: var(--lijn);
 }
 .aanbod p { margin-top: 16px; color: var(--tekst); }
-.aanbod .tussenkop { margin-top: 28px; color: var(--wit); font-weight: 700; }
+.aanbod .tussenkop { margin-top: 28px; color: var(--fg); font-weight: 700; }
 .punten { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; color: var(--tekst); }
 .punten li { position: relative; padding-left: 22px; }
-.punten li::before { content: ""; position: absolute; left: 0; top: .72em; width: 10px; height: 2px; background: var(--wit); }
+.punten li::before { content: ""; position: absolute; left: 0; top: .72em; width: 10px; height: 2px; background: var(--fg); }
 .rooster { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; align-content: start; margin: 12px 0 0; color: var(--tekst); }
-.rooster dt { color: var(--wit); font-weight: 600; }
+.rooster dt { color: var(--fg); font-weight: 600; }
 .rooster dd { margin: 0; }
 @media (max-width: 960px) {
   /* Onder elkaar: titel in kolom 1, inhoud in kolom 2 en 3 */
@@ -200,7 +210,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 }
 
 /* ---------- Intake ---------- */
-.intake { background: var(--hout); padding-block: clamp(56px, 8vw, 104px); }
+.intake { background: var(--vlak); padding-block: clamp(56px, 8vw, 104px); }
 .intake__in { align-items: end; row-gap: 20px; }
 .intake p { color: var(--tekst); }
 .intake .knop { margin-top: 24px; }
@@ -212,7 +222,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 
 /* ---------- Studio ---------- */
 .galerij { row-gap: var(--g); }
-.galerij img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; border-radius: 4px; background: var(--hout); }
+.galerij img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 4; border-radius: 4px; background: var(--vlak); }
 .galerij .galerij__breed { grid-column: 1 / -1; aspect-ratio: 12 / 5; }
 @media (max-width: 760px) {
   .galerij { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -220,23 +230,22 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
   .galerij .galerij__breed { aspect-ratio: 3 / 2; }
 }
 
-/* ---------- Over ---------- */
-.over { background: var(--wit); color: var(--zwart); padding-top: clamp(40px, 5vw, 72px); overflow: hidden; }
-.over__in { align-items: end; }
-.over__foto { mix-blend-mode: multiply; width: 100%; }
-.over__tekst { align-self: center; padding-bottom: clamp(40px, 6vw, 80px); }
-.over__tekst p { margin-top: 22px; max-width: 34em; color: #2b2b2b; }
+/* ---------- Over: kop, dan foto, dan tekst ---------- */
+.over { border-top: 1px solid var(--lijn); }
+.over h2 { margin-bottom: var(--kop-onder); }
+.over__in { align-items: start; row-gap: 32px; }
+.over__foto { width: 100%; aspect-ratio: 7 / 8; object-fit: cover; object-position: 50% 100%; mix-blend-mode: multiply; }
+.over__tekst p { max-width: 36em; color: var(--tekst); }
+.over__tekst p + p { margin-top: 18px; }
+.over__tekst p:first-child { font-size: clamp(1.125rem, 1.6vw, 1.3125rem); line-height: 1.45; color: var(--fg); }
 @media (max-width: 760px) {
   .over__in { grid-template-columns: 1fr; }
   .over__in > .k23 { grid-column: 1; }
-  .over__tekst { order: -1; padding-bottom: 8px; }
-  .over__foto { max-width: 420px; margin-inline: auto; }
-}
-@media (max-width: 480px) {
-  .over__foto { max-width: none; width: calc(100% + 2 * var(--rand)); margin-inline: calc(-1 * var(--rand)); }
+  .over__foto { max-width: 420px; }
 }
 
 /* ---------- Contact ---------- */
+.contact { background: var(--vlak); }
 .contact h2 { margin-bottom: var(--kop-onder); }
 .contact__in { align-items: start; }
 .kanalen { list-style: none; margin: 0; padding: 0; }
@@ -245,12 +254,12 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
   padding-block: 24px; border-top: 1px solid var(--lijn);
   text-decoration: none;
 }
-.kanalen span:first-child { color: var(--staal); }
+.kanalen span:first-child { color: var(--zacht); }
 .kanalen span:last-child { font-weight: 800; font-stretch: 125%; font-size: clamp(1.25rem, 2.6vw, 2rem); line-height: 1.2; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .kanalen a:hover span:last-child { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 .gegevens { margin: 0; }
 .gegevens > div { padding-block: 24px; border-top: 1px solid var(--lijn); }
-.gegevens dt { font-size: .875rem; color: var(--staal); }
+.gegevens dt { font-size: .875rem; color: var(--zacht); }
 .gegevens dd { margin: 4px 0 0; }
 .gegevens a { text-underline-offset: 4px; }
 .gegevens .rij { display: flex; flex-wrap: wrap; gap: 6px 20px; }
@@ -260,16 +269,16 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 }
 
 /* ---------- Voet ---------- */
-.voet { border-top: 1px solid var(--lijn); padding-block: 40px; }
+.voet { padding-block: 40px; }
 .voet__in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
-.voet img { height: 76px; width: auto; }
-.voet p { font-size: .875rem; color: var(--staal); }
+.voet img { height: 76px; width: auto; filter: invert(1); }
+.voet p { font-size: .875rem; color: var(--zacht); }
 </style>
 </head>
 
 <body>
 
-<header class="kop" id="kop">
+<header class="kop op-foto" id="kop">
   <div class="wrap kop__in">
     <a class="kop__logo" href="#top" aria-label="WB-Sports, naar boven">
       <img src="logo-mark.png" alt="WB-Sports" width="590" height="330">
@@ -286,7 +295,7 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
 
 <main id="top">
 
-  <section class="hero">
+  <section class="hero op-foto">
     <img class="hero__beeld" src="hero.jpg" alt="De overdekte trainingsstudio van WB-Sports, verlicht in de avond" width="1600" height="1200" fetchpriority="high">
     <div class="wrap hero__tekst">
       <h1>Personal training in Tilburg.</h1>
@@ -320,7 +329,6 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
           <ul class="punten">
             <li>Persoonlijke intake met een duidelijk doel</li>
             <li>Voedingsadvies en leefstijlcoaching</li>
-            <li>Elke vier weken een voortgangsmeting</li>
             <li>Een coach die 100% voor jouw doel gaat</li>
           </ul>
         </li>
@@ -375,13 +383,17 @@ h3 { font-size: clamp(1.3rem, 2vw, 1.625rem); line-height: 1.15; }
     </div>
   </section>
 
-  <section class="over" id="over">
-    <div class="wrap raster over__in">
-      <img class="over__foto" src="trainer.jpg" alt="Werner, trainer bij WB-Sports" width="480" height="640" loading="lazy">
-      <div class="k23 over__tekst">
-        <h2>Ik ga er 100% voor om jouw doel te halen.</h2>
-        <!-- AANPASSEN: zet hier eventueel de naam en achtergrond van de trainer, bijvoorbeeld opleiding en ervaring. -->
-        <p>Bij WB-Sports train je altijd met mij. Ik focus op kwaliteit: we leggen je doel vooraf vast, ik bewaak je voortgang en stuur bij waar dat nodig is.</p>
+  <section class="sectie over" id="over">
+    <div class="wrap">
+      <h2>Over Werner Bulten</h2>
+      <div class="raster over__in">
+        <img class="over__foto" src="trainer.jpg" alt="Werner Bulten, personal trainer bij WB-Sports" width="480" height="640" loading="lazy">
+        <div class="k23 over__tekst">
+          <p>Mijn naam is Werner Bulten, echtgenoot van mijn lieve vrouw en trotse vader van twee kinderen.</p>
+          <p>Na het afronden van mijn opleiding tot leraar Lichamelijke Opvoeding heb ik bewust gekozen om mij volledig te richten op personal training. Een keuze die voortkomt uit mijn passie voor bewegen, training en het continu verbeteren van prestaties en gezondheid.</p>
+          <p>Voor mij stopt ontwikkeling nooit. Ik ben dagelijks bezig met het vergroten van mijn kennis, het verdiepen in trainingsmethodieken en het verbeteren van mijn eigen vaardigheden. Want wie anderen wil helpen beter te worden, moet zelf ook bereid zijn om te blijven leren en ontwikkelen.</p>
+          <!-- AANPASSEN: hier komt de rest van Werners tekst ("Personal training betekent voor mij trainen in de breedste zin van het woord. Geen mens is hetzelfde ...") -->
+        </div>
       </div>
     </div>
   </section>
@@ -460,7 +472,7 @@ if (!WB.instagram) document.getElementById("socials").remove();
 
 /* Kop krijgt een zwarte achtergrond zodra je scrolt */
 const kop = document.getElementById("kop");
-const zetKop = function () { kop.classList.toggle("is-dicht", window.scrollY > 40); };
+const zetKop = function () { const dicht = window.scrollY > 40; kop.classList.toggle("is-dicht", dicht); kop.classList.toggle("op-foto", !dicht); };
 zetKop();
 window.addEventListener("scroll", zetKop, { passive: true });
 </script>
